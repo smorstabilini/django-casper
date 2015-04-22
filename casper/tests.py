@@ -2,6 +2,7 @@ from django.test import LiveServerTestCase
 from subprocess import Popen, PIPE
 import os.path
 import sys
+from six import iteritems, PY3
 
 from django.contrib.staticfiles.handlers import StaticFilesHandler
 from django.contrib.staticfiles.views import serve
@@ -64,12 +65,17 @@ class CasperTestCase(LiveServerTestCase):
         if settings.DEBUG:
             cmd.append('--verbose')
 
-        cmd.extend([('--%s=%s' % i) for i in kwargs.iteritems()])
+        cmd.extend([('--%s=%s' % i) for i in iteritems(kwargs)])
         cmd.append(test_filename)
 
         p = Popen(cmd, stdout=PIPE, stderr=PIPE,
             cwd=os.path.dirname(test_filename))  # flake8: noqa
         out, err = p.communicate()
+
+        if PY3:
+            out = out.decode(sys.stdout.encoding)
+            err = err.decode(sys.stdout.encoding)
+
         if p.returncode != 0:
             sys.stdout.write(out)
             sys.stderr.write(err)
