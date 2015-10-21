@@ -1,4 +1,4 @@
-from django.test import LiveServerTestCase
+from django.test import StaticLiveServerTestCase
 from subprocess import Popen, PIPE
 import os.path
 import sys
@@ -20,7 +20,7 @@ def staticfiles_handler_serve(self, request):
     return resp
 
 
-class CasperTestCase(LiveServerTestCase):
+class CasperTestCase(StaticLiveServerTestCase):
     """LiveServerTestCase subclass that can invoke CasperJS tests."""
 
     use_phantom_disk_cache = False
