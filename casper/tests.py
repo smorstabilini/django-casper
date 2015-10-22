@@ -1,4 +1,4 @@
-from django.test import StaticLiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from subprocess import Popen, PIPE
 import os.path
 import sys
